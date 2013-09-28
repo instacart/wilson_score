@@ -20,9 +20,9 @@ WilsonScore.interval(3, 5, 0.95, true)
 
 ## Star Ratings
 
-Imagine you have a rating system with 1 to 5 stars.
+You have a rating system where users can rate products from 1 to 5 stars.
 
-There are two ratings, a 4 star and a 5 star.
+A product has two ratings - one 4 star and one 5 star.
 
 ```ruby
 average_rating = 4.5
@@ -30,8 +30,11 @@ total_ratings = 2
 rating_range = 1..5  # 1 to 5 stars
 confidence = 0.95    # 95%
 
-WilsonScore.rating_interval(average_rating, total_ratings, rating_range, confidence)
+interval = WilsonScore.rating_interval(average_rating, total_ratings, rating_range, confidence)
+lower_bound = interval.first
 ```
+
+Use the lower bound of the interval to sort items.
 
 Again, you can set the last parameter to `true` for continuity correction.
 
