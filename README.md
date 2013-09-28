@@ -26,9 +26,9 @@ There are two ratings, a 4 star and a 5 star.
 
 ```ruby
 average_rating = 4.5
-total_ratings  = 2
-rating_range   = 1..5 # 1 to 5 stars
-confidence     = 95     # 95 %
+total_ratings = 2
+rating_range = 1..5  # 1 to 5 stars
+confidence = 0.95    # 95%
 
 WilsonScore.rating_interval(average_rating, total_ratings, rating_range, confidence)
 ```
