@@ -4,18 +4,20 @@ module WilsonScore
 
   # http://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval
   def self.interval(k, n, confidence, correction = false)
-    z = pnorm(1 - (1 - confidence) / 2)
+    z = pnorm(1 - (1 - confidence) / 2.0)
     phat = k / n.to_f
+    z2 = z**2
     if correction # continuity correction
-      a = 1.0 / (2 * (n + z**2))
-      b = 2*n*phat + z**2
-      c = z * Math.sqrt(z**2 - 1.0/n + 4*n*phat*(1 - phat) + (4*phat - 2)) + 1
-      ([0, a * (b - c)].max)..([1, a * (b + c)].min)
+      a = 2 * (n + z2)
+      b = 2*n*phat + z2
+      c = z * Math.sqrt(z2 - 1.0/n + 4*n*phat*(1 - phat) + (4*phat - 2)) + 1
+      d = z * Math.sqrt(z2 - 1.0/n + 4*n*phat*(1 - phat) - (4*phat - 2)) + 1
+      ([0, (b - c) / a].max)..([1, (b + d) / a].min)
     else
-      a = 1.0 / (1 + z ** 2 / n)
-      b = phat + z ** 2 / (2 * n)
-      c = z * Math.sqrt((phat * (1 - phat) + z ** 2 / (4 * n)) / n)
-      (a * (b - c))..(a * (b + c))
+      a = 1 + z2 / n
+      b = phat + z2 / (2 * n)
+      c = z * Math.sqrt((phat * (1 - phat) + z2 / (4 * n)) / n)
+      ((b - c) / a)..((b + c) / a)
     end
   end
 
