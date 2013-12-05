@@ -20,6 +20,12 @@ class TestWilsonScore < Minitest::Test
     assert_in_delta 0.9454, interval.last
   end
 
+  def test_continuity_correction_zero_ten
+    interval = WilsonScore.interval(0, 10, 0.95, true)
+    assert_in_delta 0, interval.first
+    assert_in_delta 0.3445, interval.last
+  end
+
   def test_continuity_correction_one_ten
     interval = WilsonScore.interval(1, 10, 0.95, true)
     assert_in_delta 0.0052, interval.first
