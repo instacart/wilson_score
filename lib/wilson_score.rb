@@ -12,7 +12,6 @@ module WilsonScore
       b = 2*n*phat + z2
       c = z * Math.sqrt(z2 - 1.0/n + 4*n*phat*(1 - phat) + (4*phat - 2)) + 1
       d = z * Math.sqrt(z2 - 1.0/n + 4*n*phat*(1 - phat) - (4*phat - 2)) + 1
-      # hack for phat = 0 or 1
       lower = phat == 0 ? 0 : (b - c) / a
       upper = phat == 1 ? 1 : (b + d) / a
       ([0, lower].max)..([1, upper].min)
