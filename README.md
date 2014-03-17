@@ -9,13 +9,25 @@ Inspired by [How Not To Sort By Average Rating](http://www.evanmiller.org/how-no
 3 positive ratings out of 5 with 95% confidence
 
 ```ruby
-WilsonScore.interval(3, 5, 0.95)
+WilsonScore.lower_bound(3, 5)
 ```
 
-[Continuity correction](http://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval#Wilson_score_interval_with_continuity_correction) can improve the score, especially for a small number of samples (n < 30).  Set the last paramter to true to use it.
+[Continuity correction](http://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval#Wilson_score_interval_with_continuity_correction) can improve the score, especially for a small number of samples (n < 30).  As of version 0.1.0, it is enabled by default.  To disable continuity correction, use:
 
 ```ruby
-WilsonScore.interval(3, 5, 0.95, true)
+WilsonScore.lower_bound(3, 5, correction: false)
+```
+
+The default confidence level is 95%. To change this, use:
+
+```ruby
+WilsonScore.lower_bound(3, 5, confidence: 0.99)
+```
+
+To get the full interval, use:
+
+```ruby
+WilsonScore.interval(3, 5)
 ```
 
 ## Star Ratings
@@ -28,15 +40,9 @@ A product has two ratings - one 4 star and one 5 star.
 average_rating = 4.5
 total_ratings = 2
 rating_range = 1..5  # 1 to 5 stars
-confidence = 0.95    # 95%
 
-interval = WilsonScore.rating_interval(average_rating, total_ratings, rating_range, confidence)
-lower_bound = interval.first
+WilsonScore.rating_lower_bound(average_rating, total_ratings, rating_range)
 ```
-
-Use the lower bound of the interval to sort items.
-
-Again, you can set the last parameter to `true` for continuity correction.
 
 ## Installation
 

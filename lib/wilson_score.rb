@@ -3,7 +3,12 @@ require "wilson_score/version"
 module WilsonScore
 
   # http://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval
-  def self.interval(k, n, confidence, correction = false)
+  def self.interval(k, n, *args)
+    args = args.dup
+    options = args[-1].is_a?(Hash) ? args.pop : {}
+    confidence = args[0] || options[:confidence] || 0.95
+    correction = !args[1].nil? ? args[1] : (options.has_key?(:correction) ? options[:correction] : true)
+
     z = pnorm(1 - (1 - confidence) / 2.0)
     phat = k / n.to_f
     z2 = z**2
@@ -23,12 +28,25 @@ module WilsonScore
     end
   end
 
-  def self.rating_interval(avg, n, score_range, confidence, correction = false)
+  def self.lower_bound(k, n, options = {})
+    interval(k, n, options).first
+  end
+
+  def self.rating_interval(avg, n, score_range, *args)
+    args = args.dup
+    options = args[-1].is_a?(Hash) ? args.pop : {}
+    confidence = args[0] || options[:confidence] || 0.95
+    correction = !args[1].nil? ? args[1] : (options.has_key?(:correction) ? options[:correction] : true)
+
     min = score_range.first
     max = score_range.last
     range = max - min
     interval = interval(n * (avg - min) / range, n, confidence, correction)
     (min + range * interval.first)..(min + range * interval.last)
+  end
+
+  def self.rating_lower_bound(avg, n, score_range, options = {})
+    rating_interval(avg, n, score_range, options).first
   end
 
   protected
