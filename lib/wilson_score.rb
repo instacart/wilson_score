@@ -4,6 +4,7 @@ module WilsonScore
 
   # http://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval
   def self.interval(k, n, *args)
+    raise ArgumentError, "second parameter cannot be 0" if n.zero?
     args = args.dup
     options = args[-1].is_a?(Hash) ? args.pop : {}
     confidence = args[0] || options[:confidence] || 0.95

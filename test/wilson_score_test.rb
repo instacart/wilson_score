@@ -70,4 +70,8 @@ class TestWilsonScore < Minitest::Test
     assert_in_delta 1.8262, WilsonScore.rating_lower_bound(5, 1, 1..5, correction: false)
   end
 
+  def test_invalid_argument
+    assert_raises(ArgumentError) { WilsonScore.interval(0, 0) }
+  end
+
 end
